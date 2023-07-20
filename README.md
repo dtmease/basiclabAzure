@@ -1,2 +1,5 @@
-# basiclabAzure
-Basic lab build for Azure
+# Hello
+
+I am still learning.  I dont know what I am actually doing yet.
+
+Weeeeeeeeeeeeeee
