@@ -80,7 +80,8 @@ resource "azurerm_container_group" "ci-dvwa" {
   ip_address_type      = "Private"
   os_type              = "Linux"
   restart_policy       = "OnFailure"
-  network_profile_id   = azurerm_network_profile.mynetprofile.id
+ # network_profile_id   = azurerm_network_profile.mynetprofile.id
+  subnet_ids = [azurerm_subnet.snet-web.id]
 
   container {
     name   = "ci-dvwa"
@@ -95,20 +96,21 @@ resource "azurerm_container_group" "ci-dvwa" {
   }
 }
 
-resource "azurerm_network_profile" "mynetprofile" {
-  name                = "mynetprofile"
-  location            = azurerm_resource_group.rgDVWA.location
-  resource_group_name = azurerm_resource_group.rgDVWA.name
-
-  container_network_interface {
-    name = "examplecnic"
-
-    ip_configuration {
-      name      = "exampleipconfig"
-      subnet_id = azurerm_subnet.snet-web.id
-    }
-  }
-}
+#23/07/23 Use of network profiles deprecated, and use of subnet_ids required instead
+#resource "azurerm_network_profile" "mynetprofile" {
+#  name                = "mynetprofile"
+#  location            = azurerm_resource_group.rgDVWA.location
+#  resource_group_name = azurerm_resource_group.rgDVWA.name
+#
+#  container_network_interface {
+#    name = "examplecnic"
+#
+#    ip_configuration {
+#      name      = "exampleipconfig"
+#      subnet_id = azurerm_subnet.snet-web.id
+#    }
+#  }
+#}
 
 # Create the Log Analytics Workspace
 # https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/log_analytics_workspace
