@@ -138,7 +138,7 @@ resource "azurerm_public_ip" "pip-waf" {
   name                = "pip-waf"
   resource_group_name = azurerm_resource_group.rgDVWA.name
   location            = azurerm_resource_group.rgDVWA.location
-  allocation_method   = "Static"
+  allocation_method   = "Dynamic"
   sku                 = "Standard"
 }
 
@@ -146,11 +146,10 @@ resource "azurerm_application_gateway" "dvwa-waf" {
   name                = "dvwa-waf"
   resource_group_name = azurerm_resource_group.rgDVWA.name
   location            = azurerm_resource_group.rgDVWA.location
-#  firewall_policy_id  = azurerm_frontdoor_firewall_policy.example.id
 
   sku {
-    name     = "WAF_v2"
-    tier     = "WAF_v2"
+    name     = "Standard_Small"
+    tier     = "Standard"
     capacity = 2
   }
 
@@ -186,7 +185,6 @@ resource "azurerm_application_gateway" "dvwa-waf" {
     frontend_ip_configuration_name = "feip-waf"
     frontend_port_name             = "feport"
     protocol                       = "Http"
-    firewall_policy_id  = azurerm_frontdoor_firewall_policy.example.id
   }
 
   request_routing_rule {
