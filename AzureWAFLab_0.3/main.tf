@@ -139,7 +139,7 @@ resource "azurerm_public_ip" "pip-waf" {
   resource_group_name = azurerm_resource_group.rgDVWA.name
   location            = azurerm_resource_group.rgDVWA.location
   allocation_method   = "Dynamic"
-  sku                 = "Standard"
+  sku                 = "Basic"
 }
 
 resource "azurerm_application_gateway" "dvwa-waf" {
