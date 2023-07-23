@@ -146,6 +146,7 @@ resource "azurerm_application_gateway" "dvwa-waf" {
   name                = "dvwa-waf"
   resource_group_name = azurerm_resource_group.rgDVWA.name
   location            = azurerm_resource_group.rgDVWA.location
+  firewall_policy_id  = azurerm_frontdoor_firewall_policy.example.id
 
   sku {
     name     = "WAF_v2"
@@ -195,4 +196,11 @@ resource "azurerm_application_gateway" "dvwa-waf" {
     backend_http_settings_name = "behttpsetting-waf"
     priority                   = 10
   }
+}
+
+resource "azurerm_frontdoor_firewall_policy" "example" {
+  name                              = "examplefdwafpolicy"
+  resource_group_name               = azurerm_resource_group.rgDVWA.name
+  enabled                           = true
+  mode                              = "Detection"
 }
