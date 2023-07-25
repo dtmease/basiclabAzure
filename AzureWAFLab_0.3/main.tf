@@ -37,7 +37,7 @@ resource "azurerm_virtual_network" "vnet-web" {
 }
 
 resource "azurerm_subnet" "snet-web" {
-  name                 = "snet-waf"
+  name                 = "snet-web"
   resource_group_name  = azurerm_resource_group.rgDVWA.name
   virtual_network_name = azurerm_virtual_network.vnet-web.name
   address_prefixes       = ["10.6.1.0/25"]
