@@ -146,6 +146,7 @@ resource "azurerm_application_gateway" "dvwa-waf" {
   name                = "dvwa-waf"
   resource_group_name = azurerm_resource_group.rgDVWA.name
   location            = azurerm_resource_group.rgDVWA.location
+  firewall_policy_id = azurerm_web_application_firewall_policy.dvwawaf.id
 
   sku {
     name     = "WAF_v2"
@@ -197,9 +198,45 @@ resource "azurerm_application_gateway" "dvwa-waf" {
   }
 }
 
-resource "azurerm_frontdoor_firewall_policy" "example" {
-  name                              = "examplefdwafpolicy"
-  resource_group_name               = azurerm_resource_group.rgDVWA.name
-  enabled                           = true
-  mode                              = "Detection"
+#resource "azurerm_frontdoor_firewall_policy" "example" {
+#  name                              = "examplefdwafpolicy"
+#  resource_group_name               = azurerm_resource_group.rgDVWA.name
+#  enabled                           = true
+#  mode                              = "Detection"
+#}
+
+resource "azurerm_web_application_firewall_policy" "dvwawaf" {
+  name                = "example-wafpolicy"
+  resource_group_name = azurerm_resource_group.rgDVWA.name
+  location            = azurerm_resource_group.rgDVWA.location
+
+  policy_settings {
+    enabled                     = true
+    mode                        = "Detection"
+    request_body_check          = true
+    file_upload_limit_in_mb     = 100
+    max_request_body_size_in_kb = 128
+  }
+
+  managed_rules {
+
+    managed_rule_set {
+      type    = "OWASP"
+      version = "3.2"
+      rule_group_override {
+        rule_group_name = "REQUEST-920-PROTOCOL-ENFORCEMENT"
+        rule {
+          id      = "920300"
+          enabled = true
+          action  = "Log"
+        }
+
+        rule {
+          id      = "920440"
+          enabled = true
+          action  = "Block"
+        }
+      }
+    }
+  }
 }
