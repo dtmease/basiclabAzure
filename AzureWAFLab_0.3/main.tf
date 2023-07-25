@@ -148,8 +148,8 @@ resource "azurerm_application_gateway" "dvwa-waf" {
   location            = azurerm_resource_group.rgDVWA.location
 
   sku {
-    name     = "Standard_Small"
-    tier     = "WAF"
+    name     = "WAF_v2"
+    tier     = "WAF_v2"
     capacity = 2
   }
 
