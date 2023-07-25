@@ -149,7 +149,7 @@ resource "azurerm_application_gateway" "dvwa-waf" {
 
   sku {
     name     = "Standard_Small"
-    tier     = "Standard"
+    tier     = "WAF"
     capacity = 2
   }
 
