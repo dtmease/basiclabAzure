@@ -171,6 +171,7 @@ resource "azurerm_application_gateway" "dvwa-waf" {
 
   backend_address_pool {
     name = "bepool-waf"
+    ip_addresses = [azurerm_container_group.ci-dvwa.ip_address]
   }
 
   backend_http_settings {
